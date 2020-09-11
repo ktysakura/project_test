@@ -18,8 +18,11 @@ int main(int argc, char *argv[])
 
 	for (update_nbr = 0; update_nbr != 10; update_nbr++) {
 		zmq::message_t update_msg;
+
 		int zipcode, temperature, relhumiddity;
+
 		subscriber.recv(&update_msg);
+
 		std::istringstream iss(static_cast<char *>(update_msg.data()));
 		iss >> zipcode >> temperature >> relhumiddity;
 		total_temp += temperature;
