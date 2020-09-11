@@ -4,6 +4,7 @@ CFLAGS = -std=c++11 -g -O0
 FINAL_LIBS = -lzmq
 FINAL_FLAGS = $(CFLAGS) $(FINAL_LIBS)
 
+
 src = $(wildcard *.c*)
 obj = $(patsubst %.cpp, %.o, $(src))
 
