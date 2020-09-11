@@ -43,7 +43,6 @@ static int lua_my_newtable(lua_State *L)
 
 	lua_pushstring(L, "val2");
 	lua_rawseti(L, -2, 2);
-//	printf("%d\n", lua_gettop(L));
 
 	return 1;
 }
@@ -88,6 +87,7 @@ static int lua_func(lua_State *L)
 {
 	int upvalue1 = lua_tointeger(L, lua_upvalueindex(1));
 	int upvalue2 = lua_tointeger(L, lua_upvalueindex(2));
+	printf("closure:%d, %d\n", upvalue1, upvalue2);
 
 	lua_pushinteger(L, ++upvalue1);
 	lua_pushvalue(L, -1);
@@ -153,22 +153,15 @@ static int lua_plus(lua_State *L){
 	lua_Integer a = luaL_checkinteger(L, 1);
 	lua_Integer b = luaL_checkinteger(L, 2);
 
-	printf("gettop():%d\n", lua_gettop(L));
 	lua_pushinteger(L, a + b);
 	lua_insert(L, 2);
 	//lua_replace(L, 1);
-
-//	lua_settop(L, 10);
-//	lua_settop(L, 0);
-	printf("gettop():%d\n", lua_gettop(L));
+	//	lua_settop(L, 10);
+	//	lua_settop(L, 0);
+	
 	for (int i = lua_gettop(L); i >= 1 ; i--) {
 		printf("%ld\t", lua_tointeger(L, i));
 	}
-	printf("\n");
-//	printf("%ld\n", lua_tointeger(L, 2));
-
-	//lua_pushinteger(L, a - b);
-
 	lua_pushinteger(L, 1000);
 	lua_pushinteger(L, 2000);
 
@@ -198,9 +191,6 @@ static int lua_data(lua_State *L)
 	lua_setfield(L, -2, "__gc");
 
 	lua_setmetatable(L, -2);
-
-
-
 	return 1;
 }
 
@@ -246,8 +236,6 @@ int lua_light_data(lua_State *L)
 	lua_pushlightuserdata(L, (void *) &lua_light_user_data_key); 
 	lua_pushstring(L, "light user data");
 	lua_settable(L, LUA_REGISTRYINDEX);
-	//lua_pushstring(L, "light user data");
-	//lua_setfield(L, LUA_REGISTRYINDEX, &lua_light_user_data_key);
 	return 0;
 }
 
@@ -255,7 +243,6 @@ int lua_get_light_data(lua_State *L)
 {
 	lua_pushlightuserdata(L, (void *)&lua_light_user_data_key);
 	lua_gettable(L, LUA_REGISTRYINDEX);
-	//lua_getfield(L, LUA_REGISTRYINDEX, &lua_light_user_data_key);
 	return 1;
 }
 
@@ -341,15 +328,8 @@ int main()
 	luaL_openlibs(L);
 
 #if 0
-//	lua_register(L,  "add", lua_plus);
+	lua_register(L,  "add", lua_plus);
 	lua_register(L, "echo_type", lua_echo_type);
-	lua_register(L, "add", lua_plus);
-	printf("register1 count:%d\n", lua_gettop(L));
-	lua_pushcfunction(L, lua_data);
-	printf("register2 count:%d\n", lua_gettop(L));
-	lua_setfield(L, LUA_GLOBALSINDEX, "new");
-	printf("register3 count:%d\n", lua_gettop(L));
-
 #if 0
 	if (luaL_dostring(L, "print(add(1, 2))") < 0) {
 		printf("luaL_dostring()\n");
