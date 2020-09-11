@@ -5,6 +5,7 @@
 
 int main(int argc, char *argv[])
 {
+
 	zmq::context_t context(1);
 	zmq::socket_t  receiver(context, ZMQ_PULL);
 
