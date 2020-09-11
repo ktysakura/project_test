@@ -25,7 +25,6 @@ int main()
 		
 		ostringstream oss;
 		oss << "world" << i;
-		//memset(msg.data(), 0, msg.size());
 		memcpy(msg.data(), oss.str().data(), oss.str().size() + 1);
 		socket.send(msg);
 
