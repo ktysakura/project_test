@@ -15,8 +15,8 @@ char lua_code_cache_key;
 static char lua_tcp_metatable_key;
 static char lua_udp_metatable_key;
 
-static char lua_tcp_udata_metable_key;
-static char lua_udp_udata_metable_key;
+static char lua_tcp_udata_metatable_key;
+static char lua_udp_udata_metatable_key;
 
 struct tcp_t
 {	
@@ -100,14 +100,14 @@ static int lua_socket_tcp_connect(lua_State *L)
 			}
 
 		} else if (!lua_isnil(L, -1)) {
-			msg = lua_pushfstring("bad \"backlog\" option type: %s",
+			msg = lua_pushfstring(L, "bad \"backlog\" option type: %s",
 								  lua_typename(L, lua_type(L, -1)));
 			return luaL_argerror(L, n, msg);
 		}
 
 		lua_pop(L, 1);
 
-		lua_getfield(L, "pool");
+	//	lua_getfield(L, "pool");
 
 		switch(lua_type(L, -1)) {
 				
@@ -126,7 +126,7 @@ static int lua_socket_tcp_connect(lua_State *L)
 
 		default:	
 			msg = lua_pushfstring(L, "bad \"pool\" option type: %s", 
-								  lua_typename(L, lua_type(L, -)));
+								  lua_typename(L, lua_type(L, -1)));
 			return luaL_argerror(L, n, msg);
 		}
 
@@ -167,6 +167,12 @@ static int lua_socket_tcp_send(lua_State *L)
 static int lua_socket_tcp_settimeouts(lua_State *L)
 {
 	printf("tcp settimeouts\n");
+	return 1;
+}
+
+static int lua_socket_tcp_close(lua_State *L)
+{
+	printf("tcp close\n");
 	return 1;
 }
 
@@ -222,6 +228,11 @@ static int lua_socket_udp(lua_State *L)
 	return 1;
 }
 
+static int lua_socket_tcp_destroy(lua_State *L)
+{
+	printf("tcp destroy\n");
+	return 1;
+}
 static void lua_inject_socket_tcp_api(lua_State *L)
 {
 	lua_createtable(L, 0, 4);
@@ -237,8 +248,12 @@ static void lua_inject_socket_tcp_api(lua_State *L)
 	lua_pushlightuserdata(L, lua_lightudata_mask(
 						  tcp_metatable_key));
 
-	lua_createtable(L, 0, 4);
+	lua_createtable(L, 0, 13);
 
+	lua_pushcclosure(L, lua_socket_tcp_connect,  0);
+	lua_setfield(L, -2, "connect");
+
+	
 	lua_pushcclosure(L, lua_socket_tcp_receive, 0);
 	lua_setfield(L, -2, "receive");
 
@@ -251,6 +266,9 @@ static void lua_inject_socket_tcp_api(lua_State *L)
 	lua_pushcclosure(L, lua_socket_tcp_settimeouts, 0);
 	lua_setfield(L, -2, "settimeouts");
 
+	lua_pushcclosure(L, lua_socket_tcp_close, 0);
+	lua_setfield(L, -2, "close");
+
 	lua_pushvalue(L, -1);
 	//self.index = self
 	lua_setfield(L, -2, "__index");
@@ -258,7 +276,7 @@ static void lua_inject_socket_tcp_api(lua_State *L)
 	lua_rawset(L, LUA_REGISTRYINDEX);
 
 	lua_pushlightuserdata(L, lua_lightudata_mask(
-						  tcp_udata_metatable));
+						  tcp_udata_metatable_key));
 	lua_createtable(L, 0, 1);
 	lua_pushcfunction(L, lua_socket_tcp_destroy);
 	lua_setfield(L, -2, "__gc");
