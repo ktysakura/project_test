@@ -1,0 +1,7 @@
+#ifndef HID_NAMESPACE_H_20190917
+#define HID_NAMESPACE_H_20190917
+
+#define USBHID_BEGIN_NAMESPACE	namespace usbhid {
+#define USBHID_END_NAMESPACE	}
+
+#endif

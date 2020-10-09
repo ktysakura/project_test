@@ -1,0 +1,58 @@
+#if !defined(_MODBUS_WECON_PLC_DEFINE_H__20190922_)
+#define _MODBUS_WECON_PLC_DEFINE_H__20190922_
+
+#define WECON_PLC_ENCRYPTION_VERSION (0x64)
+
+namespace cbl{
+
+	/*用户自定义功能码*/
+	typedef enum{
+		WECON_PLC_FUNCTION_CODE_READ= 0x41,               /*Wecon PLC读数据*/
+		WECON_PLC_FUNCTION_CODE_WRITE = 0x42,             /*Wecon PLC写数据*/
+		WECON_PLC_FUNCTION_CODE_WRITE_SUB_CODE = 0x43     /*PLC特殊码*/
+	}WECON_PLC_FUNCTION_CODE_T;
+	
+
+	typedef enum{
+		UPLOAD_KEY,
+		DOWNLOAD_KEY,
+		CLOCK_KEY,
+		PLCID_KEY,
+		BANUPLOAD_KEY,
+		END_KEY
+}PASSWORD_KEY_TYPE;
+
+	/*子码*/
+	typedef enum{
+		FUNCTION_SUB_CODE_DEL_LD = 0x00,                   /*删除梯形图*/
+		FUNCTION_SUB_CODE_RW_INTERIOR = 0x01,	           /*读写内部地址*/
+		FUNCTION_SUB_CODE_RESTORE_PLC_PARAM = 0x01,        /*还原PLC参数设置*/
+		FUNCTION_SUB_CODE_CLEAR_BIT_DEV = 0x02,            /*清除位软元件*/
+		FUNCTION_SUB_CODE_CLEAR_WORD_DEV = 0x03,           /*清除字软元件*/
+		FUNCTION_SUB_CODE_CLEAR_DATA_DEV = 0x04,           /*清除数据软元件*/
+		FUNCTION_SUB_CODE_RESTORE_SPECIAL_DEV_PARAM = 0x05,/*还原特殊软元件*/
+		FUNCTION_SUB_CODE_CLEAR_PLC_ERROR = 0x06,          /*清除PLC错误*/
+		FUNCTION_SUB_CODE_PREPARE_DOWNLOAD_LD = 0x10,      /*准备下载梯形图*/
+		FUNCTION_SUB_CODE_READ_MODULE = 0x10,              /*读取模块数据*/
+		FUNCTION_SUB_CODE_WRITE_MODULE =0x10,              /*写入模块数据*/
+		FUNCTION_SUB_CODE_IS_DOWNLOAD_LD =  0x11,          /*询问PLC能否下载梯形图*/
+		FUNCTION_SUB_CODE_PREPARE_DOWNLOAD_COMMENT = 0x12, /*准备下载注释*/
+		FUNCTION_SUB_CODE_IS_DOWNLOAD_COMMENT = 0x13,      /*询问PLC能否下载注释*/
+		FUNCTION_SUB_CODE_PREPARE_DOWNLOAD_PARAMETER = 0x14,/*准备下载参数*/
+		FUNCTION_SUB_CODE_FINISH_DOWNLOAD = 0x1E,          /*下载完成*/
+		FUNCTION_SUB_CODE_DOWNLOAD_INT = 0x1F,             /*下载中断*/
+		FUNCTION_SUB_CODE_WRITE_BITINREGISTER = 0x20,      /*字中写位*/
+		FUNCTION_SUB_CODE_WRITE_PASSWORD = 0x60,           /*写入密码*/
+		FUNCTION_SUB_CODE_TEMPORARY_DECRYPT = 0x61,        /*临时解密*/
+		FUNCTION_SUB_CODE_VERIFY_PASSWORD = 0x62,          /*密码改写验证*/
+		FUNCTION_SUB_CODE_REMOVE_PASSWORD = 0x63,          /*删除密码*/
+		FUNCTION_SUB_CODE_REMOVE_TEMPORARY_DECRYPT = 0x64, /*解除临时解密*/
+		FUNCTION_SUB_CODE_READ_ENCRYPT_MESSAGE  = 0x65,    /*读取加密信息*/
+		FUNCTION_SUB_CODE_READ_RANDOM_SEED = 0x66,         /*读取随机种子*/
+		FUNCTION_SUB_CODE_CHECK_PASSWORD = 0x67			   /*密码验证*/
+	}WENCON_PLC_FUNCTION_SUB_CODE_T;
+	
+	
+
+}
+#endif
