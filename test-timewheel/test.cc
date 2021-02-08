@@ -60,7 +60,7 @@ void AddTimeout(TimeWheel &tw, CTimerNode *p) {
         TimeList &le = tw[(iRealTick+EXPIRE) & TW_MASK];
         le.push_back(p);
     }
-}
+}Ctrl + k + q			      上一次编写代码的位置
 
 // 用来表示delay时间后调用 AddTimeout
 void AddTimeoutDelay(TimeWheel &tw, CTimerNode *p, size_t delay) {
